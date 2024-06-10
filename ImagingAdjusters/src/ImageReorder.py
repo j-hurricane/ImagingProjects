@@ -198,8 +198,8 @@ class ImageReorder(InvalidValues):
 
 target_folder = input('Enter the target file directory:')
 cover_exists = input('Do the images include the Book Cover (Yes/No):')
-first_side_scanned = input('Which page set was scanned first (Left/Right):')
-first_side_order = input('Which page should be first per-pair (Left/Right):')
+first_side_scanned = input('Which page side was scanned first (Left/Right):')
+first_side_order = input('Which page side should be first per-pair (Left/Right):')
 ir = ImageReorder(target_folder, cover_exists, first_side_scanned, first_side_order)
 ir.configure_work_order_and_run()
 input('Finished.  Press any key to continue.')
