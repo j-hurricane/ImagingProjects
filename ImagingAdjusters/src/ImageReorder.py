@@ -9,11 +9,11 @@ class InvalidValues(Exception):
         input('Stopping. Press any key to continue.')
 
     def invalid_scan_side(self):
-        print('Invalid answer provided regarding First Side Scanned. Please Answer Left or Right.')
+        print('Invalid answer provided regarding First Side Scan Order. Please Answer Left or Right.')
         input('Stopping. Press any key to continue.')
 
     def invalid_page_order(self):
-        print('Invalid answer provided regarding First Side Page Order. Please Answer Left or Right.')
+        print('Invalid answer provided regarding Page Pair Order. Please Answer Left or Right.')
         input('Stopping. Press any key to continue.')
 
 
@@ -139,41 +139,47 @@ class ImageReorder(InvalidValues):
                 input('Press any key to continue.')
 
     def separate_pages_w_cover(self):
-        for root, subdir, files in os.walk(target_folder):
-            self.root = root
-            cover = files[0]
-            self.cover = cover
-            pages = files[1:]
-            if len(pages) % 2 == 0:
-                pass
-            else:
-                print('Odd Number of pages found.  Please review for errors.')
-            book_length = (len(pages)//2)
-            self.book_length = book_length
-            if self.first_side_scanned.lower() == 'right':
-                self.left_pages = pages[book_length:]
-                self.right_pages = pages[:book_length]
-            elif self.first_side_scanned.lower() == 'left':
-                self.left_pages = pages[:book_length]
-                self.right_pages = pages[book_length:]
-            input('Press any key to continue.')
+        files = os.listdir(target_folder)
+        found_files = [
+            file for file in files if file.lower().endswith('.jpg')
+        ]
+        self.root = root
+        cover = found_files[0]
+        self.cover = cover
+        pages = found_files[1:]
+        if len(pages) % 2 == 0:
+            pass
+        else:
+            print('Odd Number of pages found.  Please review for errors.')
+        book_length = (len(pages)//2)
+        self.book_length = book_length
+        if self.first_side_scanned.lower() == 'right':
+            self.left_pages = pages[book_length:]
+            self.right_pages = pages[:book_length]
+        elif self.first_side_scanned.lower() == 'left':
+            self.left_pages = pages[:book_length]
+            self.right_pages = pages[book_length:]
+        input('Press any key to continue.')
 
     def separate_pages_wo_cover(self):
-        for root, subdir, files in os.walk(target_folder):
-            self.root = root
-            pages = files
-            if len(pages) % 2 == 0:
-                pass
-            else:
-                print('Odd Number of pages found.  Please review for errors.')
-            book_length = (len(pages)//2)
-            self.book_length = book_length
-            if self.first_side_scanned.lower() == 'right':
-                self.left_pages = pages[book_length:]
-                self.right_pages = pages[:book_length]
-            elif self.first_side_scanned.lower() == 'left':
-                self.left_pages = pages[:book_length]
-                self.right_pages = pages[book_length:]
+        files = os.listdir(target_folder)
+        found_files = [
+            file for file in files if file.lower().endswith('.jpg')
+        ]
+        self.root = root
+        pages = found_files
+        if len(pages) % 2 == 0:
+            pass
+        else:
+            print('Odd Number of pages found.  Please review for errors.')
+        book_length = (len(pages)//2)
+        self.book_length = book_length
+        if self.first_side_scanned.lower() == 'right':
+            self.left_pages = pages[book_length:]
+            self.right_pages = pages[:book_length]
+        elif self.first_side_scanned.lower() == 'left':
+            self.left_pages = pages[:book_length]
+            self.right_pages = pages[book_length:]
 
     def configure_work_order_and_run(self):
         try:
@@ -198,8 +204,8 @@ class ImageReorder(InvalidValues):
 
 target_folder = input('Enter the target file directory:')
 cover_exists = input('Do the images include the Book Cover (Yes/No):')
-first_side_scanned = input('Which page side was scanned first (Left/Right):')
-first_side_order = input('Which page side should be first per-pair (Left/Right):')
+first_side_scanned = input('Which side was scanned first (Left/Right):')
+first_side_order = input('Which side should be first per page pair (Left/Right):')
 ir = ImageReorder(target_folder, cover_exists, first_side_scanned, first_side_order)
 ir.configure_work_order_and_run()
 input('Finished.  Press any key to continue.')
