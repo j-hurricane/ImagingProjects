@@ -121,8 +121,8 @@ class ImageReorder(InvalidValues):
         for i in range(0, self.book_length):
             try:
                 file_name = f'ScannedPages_{file_count}_0.jpg'
-                new_right_path = os.path.join(root, file_name)
-                old_right_path = os.path.join(root, self.right_pages[i])
+                new_right_path = os.path.join(self.root, file_name)
+                old_right_path = os.path.join(self.root, self.right_pages[i])
                 os.rename(old_right_path, new_right_path)
             except IndexError as e:
                 print(e)
@@ -130,8 +130,8 @@ class ImageReorder(InvalidValues):
 
             try:
                 file_name = f'ScannedPages_{file_count}_1.jpg'
-                new_left_path = os.path.join(root, file_name)
-                old_left_path = os.path.join(root, self.left_pages[i])
+                new_left_path = os.path.join(self.root, file_name)
+                old_left_path = os.path.join(self.root, self.left_pages[i])
                 os.rename(old_left_path, new_left_path)
                 file_count += 1
             except IndexError as e:
@@ -143,7 +143,7 @@ class ImageReorder(InvalidValues):
         found_files = [
             file for file in files if file.lower().endswith('.jpg')
         ]
-        self.root = root
+        self.root = os.path.abspath(target_folder)
         cover = found_files[0]
         self.cover = cover
         pages = found_files[1:]
@@ -166,7 +166,7 @@ class ImageReorder(InvalidValues):
         found_files = [
             file for file in files if file.lower().endswith('.jpg')
         ]
-        self.root = root
+        self.root = os.path.abspath(target_folder)
         pages = found_files
         if len(pages) % 2 == 0:
             pass
