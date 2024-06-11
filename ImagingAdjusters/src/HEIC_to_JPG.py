@@ -4,7 +4,7 @@ target_folder = input('Enter the target file directory:')
 
 for file in os.listdir(target_folder):
     if file.upper().endswith('.HEIC'):
-        root = os.path.abspath(file)
+        root = os.path.abspath(target_folder)
         new_name = f'{file.split('.')[0]}.jpg'
         new_path = os.path.join(root, new_name)
         old_path = os.path.join(root, file)
